@@ -1,28 +1,26 @@
 package com.slyph.cloverdiscordlink.listener;
 
 import com.slyph.cloverdiscordlink.discord.DiscordBot;
-import com.slyph.cloverdiscordlink.util.TextFormatter;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+@SuppressWarnings("deprecation")
 public final class ChatListener implements Listener {
 
     private final DiscordBot discordBot;
-    private final TextFormatter textFormatter;
 
-    public ChatListener(DiscordBot discordBot, TextFormatter textFormatter) {
+    public ChatListener(DiscordBot discordBot) {
         this.discordBot = discordBot;
-        this.textFormatter = textFormatter;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChat(AsyncChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         discordBot.sendMinecraftMessage(
                 event.getPlayer().getName(),
                 event.getPlayer().getUniqueId(),
-                textFormatter.plain(event.message())
+                event.getMessage()
         );
     }
 }
