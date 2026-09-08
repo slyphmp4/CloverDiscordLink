@@ -25,6 +25,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
+    testRuntimeOnly("io.papermc.paper:paper-api:26.2.build.110-stable")
 }
 
 java {
