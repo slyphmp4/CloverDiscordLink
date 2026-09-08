@@ -2,6 +2,8 @@ package com.slyph.cloverdiscordlink.storage;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -75,14 +77,20 @@ public final class LocalYamlLinkStorage implements LinkStorage {
         Path parent = file.getParent();
         Files.createDirectories(parent);
         Path temporary = Files.createTempFile(parent, "links-", ".yml.tmp");
+        byte[] data = yaml.saveToString().getBytes(StandardCharsets.UTF_8);
 
         try {
-            Files.writeString(
+            try (FileChannel channel = FileChannel.open(
                     temporary,
-                    yaml.saveToString(),
-                    StandardCharsets.UTF_8,
+                    StandardOpenOption.WRITE,
                     StandardOpenOption.TRUNCATE_EXISTING
-            );
+            )) {
+                ByteBuffer buffer = ByteBuffer.wrap(data);
+                while (buffer.hasRemaining()) {
+                    channel.write(buffer);
+                }
+                channel.force(true);
+            }
 
             try {
                 Files.move(
