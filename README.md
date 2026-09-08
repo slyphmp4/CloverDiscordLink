@@ -1,4 +1,4 @@
-# DiscordChatBridge (English)
+# CloverDiscordLink (English)
 
 ![java21](https://img.shields.io/badge/Java-21-blue) ![paperapi](https://img.shields.io/badge/API-Paper%201.20%2B-orange)
 
@@ -32,8 +32,8 @@ A two-way bridge between **Minecraft** (Spigot / Paper / Purpur) chat and **Disc
 ## 📥 Installation
 
 1. **Download** the release from [Releases](https://github.com/freadc0de/DiscordBridge/releases)
-2. Drop `DiscordChatBridge.jar` into your server’s `plugins/` folder.
-3. Start the server, then open `plugins/DiscordChatBridge/config.yml`
+2. Drop `CloverDiscordLink.jar` into your server’s `plugins/` folder.
+3. Start the server, then open `plugins/CloverDiscordLink/config.yml`
 4. `/dchat reload` — reload the plugin configuration.
 
 > 💡 **Tip:** In Discord’s developer panel enable *MESSAGE CONTENT INTENT*, otherwise the bot can’t read message text.
@@ -55,7 +55,7 @@ cd DiscordChatBridge
 
 # 3. The built file will be here:
 ```bash
-build/libs/discord-chat-bridge-<version>.jar
+build/libs/CloverDiscordLink-<version>.jar
 ```
 
 | Key                    | Description                       |
@@ -69,22 +69,20 @@ Supported placeholders: `{player}`, `{author}`, `{message}`.
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing
 
 PRs are welcome!
 Commit message format: `type(scope): subject`.
 
-
 ---
 
-
-# DiscordChatBridge (Russian)
+# CloverDiscordLink (Russian)
 
 Двусторонний мост между чатом **Minecraft** (Spigot/Paper/Purpur) и **Discord**
 
 ---
 
-## ✨ Возможности
+## ✨ Возможности
 
 |                  | Подробности                                                                      |
 | ---------------- | -------------------------------------------------------------------------------- |
@@ -93,12 +91,12 @@ Commit message format: `type(scope): subject`.
 | **Join / Quit**  | Вход и выход игроков объявляется цветными Embed‑ами                              |
 | **Account link** | Вы можете связать свой аккаунт Minecraft с аккунтом Discord                      |
 | **HEX‑цвета**    | В конфиге поддерживается `&RRGGBB`                                               |
-| **1.19 → 1.20**  | Работает на любых ядрах Paper/Purpur 1.19+                                       |
+| **1.19 → 1.20**  | Работает на любых ядрах Paper/Purpur 1.19+                                       |
 | **MySQL**        | Присутствует поддержка базы данных MySQL                                         |
 
 ---
 
-## 📋 Список версий
+## 📋 Список версий
 
 |    Minecraft    | Последний релиз | Версия Java  | Платформы     | Статус поддержки               |
 |:---------------:|:---------------:|:------------:|:--------------|:-------------------------------|
@@ -107,18 +105,18 @@ Commit message format: `type(scope): subject`.
 
 ---
 
-## 📥 Установка
+## 📥 Установка
 
 1. **Скачайте** релиз с [Releases](https://github.com/freadc0de/DiscordBridge/releases)
-2. Положите `DiscordChatBridge.jar` в папку `plugins/` вашего сервера.
-3. Запустите сервер, затем откройте `plugins/DiscordChatBridge/config.yml`
+2. Положите `CloverDiscordLink.jar` в папку `plugins/` вашего сервера.
+3. Запустите сервер, затем откройте `plugins/CloverDiscordLink/config.yml`
 4. `/dchat reload` — перезапуск конфигурации плагина.
 
 > 💡 **Совет:** в панели разработчика Discord включите *MESSAGE CONTENT INTENT*, иначе бот не будет видеть текст сообщений.
 
 ---
 
-## 🛠️ Сборка из исходников
+## 🛠️ Сборка из исходников
 
 # 1. Клонируем репозиторий
 ```bash
@@ -126,14 +124,14 @@ git clone https://github.com/your-repo/DiscordChatBridge.git
 cd DiscordChatBridge
 ```
 
-# 2. Собираем fat‑jar (Gradle 8, Java 17)
+# 2. Собираем fat‑jar (Gradle 8, Java 17)
 ```bash
 ./gradlew shadowJar
 ```
 
 # 3. Готовый файл будет здесь:
 ```bash
-build/libs/discord-chat-bridge-<version>.jar
+build/libs/CloverDiscordLink-<version>.jar
 ```
 
 | Ключ                   | Описание                          |
@@ -147,7 +145,7 @@ build/libs/discord-chat-bridge-<version>.jar
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing
 
 PR‑ы приветствуются!
 Формат коммит‑сообщений: `type(scope): subject`.
