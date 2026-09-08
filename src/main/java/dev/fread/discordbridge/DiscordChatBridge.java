@@ -45,7 +45,7 @@ public final class DiscordChatBridge extends JavaPlugin {
         String sep = "=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=-=+=";
         getLogger().info(sep);
         getLogger().info("");
-        getLogger().info("DiscordChatBridge v" + getDescription().getVersion());
+        getLogger().info("CloverDiscordLink v" + getDescription().getVersion());
         getLogger().info("Storage   : " + (getConfig().getBoolean("mysql.enabled", false) ? "MySQL" : "Local"));
         getLogger().info("Role gate : " + (getConfig().getBoolean("discord.role-gate", true) ? "ON" : "OFF"));
         getLogger().info("");
