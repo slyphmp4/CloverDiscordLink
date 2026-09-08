@@ -1,12 +1,12 @@
-name: DiscordChatBridge
+name: CloverDiscordLink
 main: dev.fread.discordbridge.DiscordChatBridge
-version: 1.4.3
+version: ${version}
 api-version: 1.16
-author: fread
-description: Chat bridge from discord to minecraft and vice versa
+author: slyph
+description: Discord integration and account linking for Minecraft
 commands:
   dchat:
-    description: Reload DiscordChatBridge Configuration
+    description: Reload CloverDiscordLink configuration
     usage: /<command> reload
     permission: dchat.reload
 permissions:
