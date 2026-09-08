@@ -2,12 +2,18 @@ update-check: true
 
 discord:
   token: "BOT_TOKEN"
-  channelId: "123456789012345678"
-
-# - - - - - - - - - - - - - - - -
-
-  role-gate: true # set false to let any linked user join
-  requiredRoleId: "123456789012345678" # role that grants access
+  channel-id: "123456789012345678"
+  role-gate: true
+  required-role-id: "123456789012345678"
+  role-lookup-timeout-seconds: 5
+  join-message: "**{player}** joined the server"
+  quit-message: "**{player}** left the server"
+  footer: "Clover • {time}"
+  dm-link-success: "✅ Your Discord account is now linked."
+  dm-link-invalid: "❌ This code is invalid or has expired."
+  dm-discord-in-use: "❌ This Discord account is already linked to another Minecraft account."
+  dm-storage-error: "❌ The link could not be saved. Please join the server again and request a new code."
+  dm-rate-limited: "❌ Too many invalid attempts. Please try again shortly."
 
 mysql:
   enabled: false
@@ -15,78 +21,61 @@ mysql:
   port: 3306
   database: database
   user: root
-  password: "password"
-
-# - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . -
+  password: ""
+  pool-size: 4
+  ssl: false
 
 chat:
   to-minecraft-prefix: "&3220a6[&7568f9ᴅ&3220a6] &c9c0ff• "
 
 messages:
+  no-permission:
+    - "&7"
+    - "&ff5c5cYou do not have permission to do that."
+    - "&7"
+  reload-success:
+    - "&7"
+    - "&74e6a7CloverDiscordLink configuration reloaded."
+    - "&7"
+  reload-failed:
+    - "&7"
+    - "&ff5c5cThe configuration contains invalid values. The previous configuration is still active."
+    - "&7"
+  usage:
+    - "&7"
+    - "&d7d2ffUsage: /{label} reload"
+    - "&7"
   discord-to-minecraft:
     - "&897dff{author} &514f5b→ &ddd6ff{message}"
-
   discord-hover:
     - "&7"
-    - "&7bacff ♯ Канал: &3c84ff&l(название канала в дискорде для моста сообщений) "
-    - "&798cff ⚑ Отправитель: &546cff&l{author} "
+    - "&7bacff♯ Channel: &3c84ff&l{channel}"
+    - "&798cff⚑ Sender: &546cff&l{author}"
     - "&7"
-    - "&d3d2ff • Чтобы перейти к этому сообщению, нажмите "
-    - "&d3d2ff на текст"
+    - "&d3d2ffClick the message to open it in Discord."
     - "&7"
-
-# - - - - - - - - - - - - - - - -
 
 link:
-  role-kick:
-    - "&4d4f50* * *"
-    - ""
-    - ""
-    - "&ff4f2f&lСТОП"
-    - ""
-    - "&9c8d8aЧтобы войти на сервер, вы должны иметь роль"
-    - "&9c8d8aпри которой вас могут пустить на сервер"
-    - ""
-    - ""
-    - "&4d4f50* * *"
-
+  code-length: 8
+  code-ttl-seconds: 300
+  max-dm-attempts: 5
+  attempt-window-seconds: 60
   kick-message:
-    - "&4d4f50* * *"
-    - ""
-    - ""
-    - "&439bff&lЛИНК АККАУНТА"
-    - ""
-    - "&b1c5ddВы должны связать ваш аккаунт &5957fa&lDiscord &b1c5ddс аккаунтом в &8bff51&lMinecraft"
-    - ""
-    - "&b1c5ddОтправьте сообщение с кодом &62a9ff&l{code} &b1c5ddботу &62a9ff&l{bot}"
-    - "&b1c5ddи зайдите ещё раз"
-    - ""
-    - ""
-    - "&4d4f50* * *"
-
-# - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . -
-
-#
-#         *        .        ✦          .             .         *
-#        .                *        .         ✷             ✧        .
-#               .        ⋆    *         ✧         *      ⋆          .
-#  ⋆           .        .        ⋆     .             ⋆       .     .
-#        ✷         .       *         ✦     ⋆      .     ⋆      *
-# .      ⋆    ⋆        .         ✧       ⋆     ✦           ⋆         ✦
-#        .    ⋆         ✷             ⋆          ⋆    ✧      .      ⋆
-# ✷      .        ⋆     .    ⋆      ☄       ⋆     .     ⋆     ✧        .
-#       .    ✦       .      ⋆       ⋆      ✷        .        ⋆       .
-#             ⋆        ⋆        ✷           .         ✦      ⋆
-#  ⋆    .       ✦       ⋆       .     𝒷𝓎       ✷        ✦        ⋆       ✷
-#       .         ✷        ⋆        𝓈𝓁𝓎𝓅𝒽  .         ✧    ⋆         ⋆
-#   ✷          .        .      ⋆  𝒾𝓃 ２０２５  .             ⋆        .      .
-#        .          ⋆    *         ✦         *      ⋆          .
-#            .                *        .         ✷             ✧        .
-#        ✷         .       *         ✦     ⋆      .     ⋆      *
-# .      ⋆    ⋆        .         ✧       ⋆     ✦           ⋆         ✦
-#        .    ⋆         ✷             ⋆          ⋆    ✧      .      ⋆
-# ✷      .        ⋆     .    ⋆      ☄       ⋆     .     ⋆     ✧        .
-#       .    ✦       .      ⋆       ⋆      ✷        .        ⋆      .
-#             ⋆        ⋆        ✷           .         ✦      ⋆
-#         *        .        ✦          .             .         *
-#
+    - "&7"
+    - "&439bff&lLINK YOUR ACCOUNT"
+    - "&7"
+    - "&b1c5ddLink your &5957fa&lDiscord &b1c5ddaccount with your &8bff51&lMinecraft &b1c5ddaccount."
+    - "&b1c5ddSend code &62a9ff&l{code} &b1c5ddto &62a9ff&l{bot}&b1c5dd, then join again."
+    - "&7"
+  role-kick:
+    - "&7"
+    - "&ff4f2f&lACCESS DENIED"
+    - "&7"
+    - "&9c8d8aYour linked Discord account does not have the required role."
+    - "&7"
+  service-unavailable:
+    - "&7"
+    - "&ffb454&lDISCORD LINK IS TEMPORARILY UNAVAILABLE"
+    - "&7"
+    - "&c7c1bfPlease try joining again in a moment."
+    - "&7"

@@ -1,151 +1,157 @@
-# CloverDiscordLink (English)
+# CloverDiscordLink
 
-![java21](https://img.shields.io/badge/Java-21-blue) ![paperapi](https://img.shields.io/badge/API-Paper%201.20%2B-orange)
+CloverDiscordLink is a Discord integration plugin for Minecraft servers running Paper or Cardboard 26.2. It combines account linking, Discord-role access control, a two-way Minecraft/Discord chat bridge, and join/quit notifications.
 
-A two-way bridge between **Minecraft** (Spigot / Paper / Purpur) chat and **Discord**
+## Requirements
 
----
+- Minecraft / Paper / Cardboard 26.2
+- Java 25
+- A Discord bot with `MESSAGE CONTENT INTENT` enabled
+- Optional: MySQL
 
-## ✨ Features
+The project intentionally compiles against Paper API `26.2.build.110-stable` for Cardboard compatibility.
 
-|                  | Details                                                                       |
-| ---------------- | ----------------------------------------------------------------------------- |
-| **MC → Discord** | Messages are forwarded to Discord as an **Embed** with the player’s avatar    |
-| **Discord → MC** | A Discord user’s reply appears in-game with a customizable prefix             |
-| **Join / Quit**  | Player joins and quits are announced with colorful Embeds                     |
-| **Account link** | You can link your Minecraft account to your Discord account                   |
-| **HEX colors**   | `&RRGGBB` supported in config                                                 |
-| **1.19 → 1.20**  | Works on any Paper/Purpur core 1.19+                                          |
-| **MySQL**        | MySQL database support included                                               |
+## Features
 
----
+- Minecraft chat → Discord embeds
+- Discord channel → Minecraft Adventure components
+- Clickable Discord messages with hover details in Minecraft
+- Minecraft UUID ↔ Discord account linking through expiring one-time codes
+- Optional Discord role gate before a player can join
+- Join and quit embeds
+- Local `links.yml` storage or pooled MySQL storage
+- Automatic migration from the old `plugins/DiscordChatBridge` data folder
+- `&` colors, `&RRGGBB`, `&#RRGGBB`, and MiniMessage HEX colors
+- Async Discord, HTTP, database, and file operations where blocking work is involved
+- Configuration reload through `/dchat reload`
 
-## 📋 Version Matrix
+## Paper and Cardboard compatibility
 
-|   Minecraft     | Latest release | Java version | Platforms | Support status        |
-|:---------------:|:--------------:|:------------:|:---------:|:----------------------|
-| 1.20 – 1.20.6   |    _latest_    |      21      | Spigot, Paper, Purpur | ✅ **Active Release** |
-| 1.19 – 1.19.4   |    _latest_    |      17      | Spigot, Paper, Purpur | ✅ **Active Release** |
+CloverDiscordLink targets the Paper API exposed by Cardboard 26.2 and avoids NMS, CraftBukkit internals, and reflection.
 
----
+Cardboard 26.2 currently dispatches Bukkit `AsyncPlayerChatEvent` for player chat instead of Paper `AsyncChatEvent`. The Minecraft → Discord bridge therefore deliberately listens to the Bukkit compatibility event so the same plugin JAR works on both Paper and Cardboard. Login access control uses `AsyncPlayerPreLoginEvent`, which is dispatched by Cardboard 26.2.
 
-## 📥 Installation
+## Installation
 
-1. **Download** the release from [Releases](https://github.com/freadc0de/DiscordBridge/releases)
-2. Drop `CloverDiscordLink.jar` into your server’s `plugins/` folder.
-3. Start the server, then open `plugins/CloverDiscordLink/config.yml`
-4. `/dchat reload` — reload the plugin configuration.
+1. Build or download `CloverDiscordLink-<version>.jar`.
+2. Put it in the server `plugins/` directory.
+3. Start the server once.
+4. Configure `plugins/CloverDiscordLink/config.yml`.
+5. Restart the server.
 
-> 💡 **Tip:** In Discord’s developer panel enable *MESSAGE CONTENT INTENT*, otherwise the bot can’t read message text.
+For secrets, environment variables can be used instead of storing values in YAML:
 
----
-
-## 🛠️ Building from source
-
-# 1. Clone the repository
-```bash
-git clone https://github.com/your-repo/DiscordChatBridge.git
-cd DiscordChatBridge
+```text
+CLOVER_DISCORD_TOKEN
+CLOVER_MYSQL_PASSWORD
 ```
 
-# 2. Build the fat-jar (Gradle 8, Java 17)
-```bash
-./gradlew shadowJar
+## Discord setup
+
+Create a Discord bot and enable `MESSAGE CONTENT INTENT` in the Discord Developer Portal. Add the bot to the Discord server and configure:
+
+```yaml
+discord:
+  token: "BOT_TOKEN"
+  channel-id: "123456789012345678"
+  role-gate: true
+  required-role-id: "123456789012345678"
 ```
 
-# 3. The built file will be here:
+When `role-gate` is enabled, a linked player must also have the configured role in the guild that owns the bridge channel.
+
+## Account linking
+
+When an unlinked player joins:
+
+1. CloverDiscordLink generates an expiring numeric code.
+2. The login is rejected with instructions from `link.kick-message`.
+3. The player sends the code to the Discord bot in a direct message.
+4. The plugin persists the Minecraft UUID ↔ Discord ID link.
+5. The player joins again.
+
+Codes use `SecureRandom`, are unique among active codes, expire automatically, and are rate-limited on invalid Discord DM attempts.
+
+## Storage
+
+Local storage is used by default:
+
+```yaml
+mysql:
+  enabled: false
+```
+
+MySQL can be enabled with:
+
+```yaml
+mysql:
+  enabled: true
+  host: localhost
+  port: 3306
+  database: database
+  user: root
+  password: ""
+  pool-size: 4
+  ssl: false
+```
+
+MySQL connections use HikariCP. The existing `dcb_links` table name is preserved so installations upgrading from DiscordChatBridge keep their existing links. If MySQL cannot initialize, the plugin falls back to local `links.yml`.
+
+Local `links.yml` updates are written to a temporary file, flushed, and atomically replaced when the filesystem supports atomic moves.
+
+## Commands
+
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/dchat reload` | `dchat.reload` | Reloads supported configuration values |
+
+Changing the Discord bot token or MySQL connection settings requires a server restart.
+
+## Building
+
 ```bash
+./gradlew clean build
+```
+
+The production plugin JAR is created in:
+
+```text
 build/libs/CloverDiscordLink-<version>.jar
 ```
 
-| Key                    | Description                       |
-| ---------------------- | --------------------------------- |
-| `token`                | Discord bot token                 |
-| `channelId`            | ID of the channel the plugin bridges |
-| `to‑minecraft-prefix`  | Prefix for messages coming from Discord  |
-| `discord-to-minecraft` | Format of the line that appears in Minecraft chat  |
+The build uses:
 
-Supported placeholders: `{player}`, `{author}`, `{message}`.
+- Java 25
+- Gradle 9.7.0
+- Paper API 26.2 build 110 stable
+- JDA 6.5.0
+- HikariCP 7.1.0
+- MySQL Connector/J 26.7.0
+- JUnit 6.1.3
 
----
+## Project structure
 
-## 🤝 Contributing
-
-PRs are welcome!
-Commit message format: `type(scope): subject`.
-
----
-
-# CloverDiscordLink (Russian)
-
-Двусторонний мост между чатом **Minecraft** (Spigot/Paper/Purpur) и **Discord**
-
----
-
-## ✨ Возможности
-
-|                  | Подробности                                                                      |
-| ---------------- | -------------------------------------------------------------------------------- |
-| **MC → Discord** | Сообщения пересылаются в Discord **Embed**‑сообщением с аватаром игрока          |
-| **Discord → MC** | Ответ Discord‑пользователя появляется в игровом чате с настраиваемым префиксом   |
-| **Join / Quit**  | Вход и выход игроков объявляется цветными Embed‑ами                              |
-| **Account link** | Вы можете связать свой аккаунт Minecraft с аккунтом Discord                      |
-| **HEX‑цвета**    | В конфиге поддерживается `&RRGGBB`                                               |
-| **1.19 → 1.20**  | Работает на любых ядрах Paper/Purpur 1.19+                                       |
-| **MySQL**        | Присутствует поддержка базы данных MySQL                                         |
-
----
-
-## 📋 Список версий
-
-|    Minecraft    | Последний релиз | Версия Java  | Платформы     | Статус поддержки               |
-|:---------------:|:---------------:|:------------:|:--------------|:-------------------------------|
-|  1.20 - 1.20.6  |    _latest_     |      21      | Spigot, Paper, Purpur | ✅ **Active Release**          |
-|  1.19 – 1.19.4  |    _latest_     |      17      | Spigot, Paper, Purpur | ✅ **Active Release**          |
-
----
-
-## 📥 Установка
-
-1. **Скачайте** релиз с [Releases](https://github.com/freadc0de/DiscordBridge/releases)
-2. Положите `CloverDiscordLink.jar` в папку `plugins/` вашего сервера.
-3. Запустите сервер, затем откройте `plugins/CloverDiscordLink/config.yml`
-4. `/dchat reload` — перезапуск конфигурации плагина.
-
-> 💡 **Совет:** в панели разработчика Discord включите *MESSAGE CONTENT INTENT*, иначе бот не будет видеть текст сообщений.
-
----
-
-## 🛠️ Сборка из исходников
-
-# 1. Клонируем репозиторий
-```bash
-git clone https://github.com/your-repo/DiscordChatBridge.git
-cd DiscordChatBridge
+```text
+src/main/java/com/slyph/cloverdiscordlink/
+├── CloverDiscordLink.java
+├── account/
+├── command/
+├── config/
+├── discord/
+├── listener/
+├── storage/
+├── update/
+└── util/
 ```
 
-# 2. Собираем fat‑jar (Gradle 8, Java 17)
-```bash
-./gradlew shadowJar
-```
+## Changelog
 
-# 3. Готовый файл будет здесь:
-```bash
-build/libs/CloverDiscordLink-<version>.jar
-```
+See `CHANGELOG.md` for release changes and upgrade notes.
 
-| Ключ                   | Описание                          |
-| ---------------------- | --------------------------------- |
-| `token`                | Токен Discord‑бота                |
-| `channelId`            | ID канала, где мостит плагин      |
-| `to‑minecraft-prefix`  | Префикс для сообщений из Discord  |
-| `discord-to-minecraft` | Формат строки, приходящей в игру  |
+## License
 
-Поддерживаемые плейсхолдеры: `{player}`, `{author}`, `{message}`.
+No license is currently declared in this repository.
 
----
+## Author
 
-## 🤝 Contributing
-
-PR‑ы приветствуются!
-Формат коммит‑сообщений: `type(scope): subject`.
+`slyph`
