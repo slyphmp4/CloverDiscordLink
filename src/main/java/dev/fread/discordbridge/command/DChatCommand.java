@@ -22,7 +22,7 @@ public class DChatCommand implements CommandExecutor {
             }
 
             plugin.getConfigManager().reload();
-            sender.sendMessage(ChatColor.GREEN + "DiscordChatBridge: конфигурация перезагружена.");
+            sender.sendMessage(ChatColor.GREEN + "CloverDiscordLink: конфигурация перезагружена.");
             plugin.getLogger().info(sender.getName() + " перезагрузил конфиг.");
             return true;
         }
