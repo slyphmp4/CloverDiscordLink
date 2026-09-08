@@ -2,8 +2,12 @@ package com.slyph.cloverdiscordlink.storage;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,14 +52,14 @@ public final class LocalYamlLinkStorage implements LinkStorage {
     public void save(UUID uuid, String discordId) throws Exception {
         ensureLoaded();
         yaml.set(uuid + ".discord", discordId);
-        yaml.save(file.toFile());
+        persist();
     }
 
     @Override
     public void delete(UUID uuid) throws Exception {
         ensureLoaded();
         yaml.set(uuid.toString(), null);
-        yaml.save(file.toFile());
+        persist();
     }
 
     @Override
@@ -65,6 +69,34 @@ public final class LocalYamlLinkStorage implements LinkStorage {
 
     @Override
     public void close() {
+    }
+
+    private void persist() throws Exception {
+        Path parent = file.getParent();
+        Files.createDirectories(parent);
+        Path temporary = Files.createTempFile(parent, "links-", ".yml.tmp");
+
+        try {
+            Files.writeString(
+                    temporary,
+                    yaml.saveToString(),
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            );
+
+            try {
+                Files.move(
+                        temporary,
+                        file,
+                        StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+            } catch (AtomicMoveNotSupportedException exception) {
+                Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } finally {
+            Files.deleteIfExists(temporary);
+        }
     }
 
     private void ensureLoaded() {
