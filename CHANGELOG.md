@@ -44,3 +44,9 @@ All notable changes to CloverDiscordLink are documented here.
 - `api-version` is now `26.2`.
 - Existing local links and the `dcb_links` MySQL table are retained.
 - Discord bot token and MySQL connection changes still require a full server restart.
+
+### Verification
+
+- Production sources compile against Paper API 26.2 build 110 stable on Java 25.
+- `./gradlew clean build` and the included JUnit test suite must pass in GitHub Actions before release publication.
+- Cardboard 26.2 event compatibility was checked against its `ver/26.2` source implementation. A live Cardboard server smoke test is not part of the automated CI suite.
