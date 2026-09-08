@@ -1,5 +1,5 @@
 /*
- * DiscordChatBridge • автор fread
+ * CloverDiscordLink • автор slyph
  * Paper 1.20+ / Java 17 / JDA-5 «fat-jar» через Shadow
  */
 
@@ -9,8 +9,8 @@ plugins {
     id 'xyz.jpenilla.run-paper'          version '2.3.1'
 }
 
-group   = 'dev.fread'
-version = '1.0'        // ↑ номер свободно меняйте
+group   = 'com.slyph'
+version = '1.4.3'
 
 repositories {
     mavenCentral()
