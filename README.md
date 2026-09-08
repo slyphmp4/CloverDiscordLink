@@ -25,6 +25,12 @@ The project intentionally compiles against Paper API `26.2.build.110-stable` for
 - Async Discord, HTTP, database, and file operations where blocking work is involved
 - Configuration reload through `/dchat reload`
 
+## Paper and Cardboard compatibility
+
+CloverDiscordLink targets the Paper API exposed by Cardboard 26.2 and avoids NMS, CraftBukkit internals, and reflection.
+
+Cardboard 26.2 currently dispatches Bukkit `AsyncPlayerChatEvent` for player chat instead of Paper `AsyncChatEvent`. The Minecraft → Discord bridge therefore deliberately listens to the Bukkit compatibility event so the same plugin JAR works on both Paper and Cardboard. Login access control uses `AsyncPlayerPreLoginEvent`, which is dispatched by Cardboard 26.2.
+
 ## Installation
 
 1. Build or download `CloverDiscordLink-<version>.jar`.
@@ -91,6 +97,8 @@ mysql:
 
 MySQL connections use HikariCP. The existing `dcb_links` table name is preserved so installations upgrading from DiscordChatBridge keep their existing links. If MySQL cannot initialize, the plugin falls back to local `links.yml`.
 
+Local `links.yml` updates are written to a temporary file, flushed, and atomically replaced when the filesystem supports atomic moves.
+
 ## Commands
 
 | Command | Permission | Description |
@@ -135,6 +143,10 @@ src/main/java/com/slyph/cloverdiscordlink/
 ├── update/
 └── util/
 ```
+
+## Changelog
+
+See `CHANGELOG.md` for release changes and upgrade notes.
 
 ## License
 
