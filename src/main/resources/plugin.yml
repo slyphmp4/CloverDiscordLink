@@ -1,15 +1,16 @@
 name: CloverDiscordLink
-main: dev.fread.discordbridge.DiscordChatBridge
-version: ${version}
-api-version: 1.16
+main: com.slyph.cloverdiscordlink.CloverDiscordLink
+version: '${version}'
+api-version: '26.2'
 author: slyph
-description: Discord integration and account linking for Minecraft
+website: https://github.com/slyphmp4/CloverDiscordLink
+description: Discord account linking, access control, and two-way chat bridge for Minecraft.
 commands:
   dchat:
-    description: Reload CloverDiscordLink configuration
+    description: Manage CloverDiscordLink.
     usage: /<command> reload
     permission: dchat.reload
 permissions:
   dchat.reload:
-    description: Allows you to reload the plugin config
+    description: Allows reloading CloverDiscordLink configuration.
     default: op
