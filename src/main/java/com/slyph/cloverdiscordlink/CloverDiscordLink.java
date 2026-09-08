@@ -46,7 +46,7 @@ public final class CloverDiscordLink extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(
-                new ChatListener(discordBot, textFormatter),
+                new ChatListener(discordBot),
                 this
         );
         getServer().getPluginManager().registerEvents(
@@ -65,7 +65,7 @@ public final class CloverDiscordLink extends JavaPlugin {
         command.setExecutor(commandHandler);
         command.setTabCompleter(commandHandler);
 
-        getLogger().info("CloverDiscordLink v" + getPluginMeta().getVersion() + " enabled for Paper 26.2.");
+        getLogger().info("CloverDiscordLink v" + getPluginMeta().getVersion() + " enabled for Paper/Cardboard 26.2.");
 
         if (configManager.settings().updateCheck()) {
             new UpdateChecker(this).check();
