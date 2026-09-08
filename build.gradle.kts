@@ -55,6 +55,7 @@ tasks {
         archiveBaseName = "CloverDiscordLink"
         archiveClassifier = ""
         duplicatesStrategy = DuplicatesStrategy.WARN
+        exclude("META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt")
         mergeServiceFiles()
     }
 
