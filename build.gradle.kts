@@ -15,7 +15,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.110-stable")
 
-    implementation("net.dv8tion:JDA:6.5.0") {
+    implementation("net.dv8tion:JDA:6.6.0") {
         exclude(group = "club.minnced", module = "opus-java")
     }
     implementation("com.zaxxer:HikariCP:7.1.0")
