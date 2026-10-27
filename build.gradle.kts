@@ -19,7 +19,7 @@ dependencies {
         exclude(group = "club.minnced", module = "opus-java")
     }
     implementation("com.zaxxer:HikariCP:7.1.0")
-    implementation("com.mysql:mysql-connector-j:26.7.0") {
+    implementation("com.mysql:mysql-connector-j:26.10.0") {
         exclude(group = "com.google.protobuf", module = "protobuf-java")
     }
 
