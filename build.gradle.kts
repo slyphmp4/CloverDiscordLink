@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.3.build.219-stable")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.257-stable")
 
     implementation("net.dv8tion:JDA:6.7.0") {
         exclude(group = "club.minnced", module = "opus-java")
@@ -25,7 +25,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
-    testRuntimeOnly("io.papermc.paper:paper-api:26.3.build.219-stable")
+    testRuntimeOnly("io.papermc.paper:paper-api:26.3.build.257-stable")
 }
 
 java {
